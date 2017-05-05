@@ -1,4 +1,9 @@
+<<<<<<< HEAD
 import numpy as np afdaf
+=======
+import numpy  as nnnn
+
+>>>>>>> 4118acce87b8b048dff2f05ceaec8036141abd0c
 import gzip
 from sklearn import preprocessing
 from deepnn import DeepNN
