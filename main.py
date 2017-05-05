@@ -6,7 +6,7 @@ from deepnn import DeepNN
 from sklearn.svm import SVC
 from sklearn.preprocessing import normalize
 from sklearn.metrics import accuracy_score
-
+from sjwl import *
 
 def _read32(bytestream):
     dt = np.dtype(np.uint32).newbyteorder('>')
@@ -19,9 +19,10 @@ def extract_images(filename):
         magic = _read32(bytestream)
         if magic != 2051:
             raise ValueError('Invalid magic number in MNIST image file')
-        num_images = _read32(bytestream)
-        rows = _read32(bytestream)
-        cols = _read32(bytestream)
+        num_images = _read32(bytestream)[0]
+        rows = _read32(bytestream)[0]
+        cols = _read32(bytestream)[0]
+        # print num_images, rows, cols
         buf = bytestream.read(rows * cols * num_images)
         data = np.frombuffer(buf, dtype=np.uint8)
         data = data.reshape(num_images, rows * cols)
@@ -43,7 +44,7 @@ def extract_labels(filename, one_hot=False):
         magic = _read32(bytestream)
         if magic != 2049:
             raise ValueError('lll')
-        num_items = _read32(bytestream)
+        num_items = _read32(bytestream)[0]
         buf = bytestream.read(num_items)
         labels = np.frombuffer(buf, dtype=np.uint8)
         if one_hot:
@@ -87,13 +88,16 @@ def dnn():
     X_train = normalize(train_data)
     X_test = normalize(test_data)
     # print test_labels[:10]
-    svm = SVC(kernel='linear', C=100)
-    svm.fit(X_train, train_labels)
-    pre = svm.predict(X_test)
-    print accuracy_score(test_labels, pre)
+    # svm = SVC(kernel='linear', C=100)
+    # svm.fit(X_train, train_labels)
+    # pre = svm.predict(X_test)
+    # print accuracy_score(test_labels, pre)
     # dnn = DeepNN([600], [500, 64, 10], learning_rate=0.1, lambda_reg=0.001, nb_epoches=1000)
 
     # dnn.train_dnn(normed_train_data[:1000], train_labels[:1000])
     # dnn.predict(normed_test_data, test_labels)
+
+    sj = SJWL(X_train, train_labels, X_test, test_labels)
+    sj.train()
 if __name__ == '__main__':
     dnn()
