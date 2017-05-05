@@ -1,5 +1,4 @@
-import numpy 
-
+import numpy as np
 import gzip
 from sklearn import preprocessing
 from deepnn import DeepNN
