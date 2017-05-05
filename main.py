@@ -1,6 +1,4 @@
-import numpy  as nnnn
-
->>>>>>> ddd
+import numpy as np afdaf
 import gzip
 from sklearn import preprocessing
 from deepnn import DeepNN
